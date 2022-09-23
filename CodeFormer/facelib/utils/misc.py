@@ -13,26 +13,26 @@ from urllib.parse import urlparse
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-# def download_pretrained_models(file_ids, save_path_root):
-#     os.makedirs(save_path_root, exist_ok=True)
+def download_pretrained_models(file_ids, save_path_root):
+    os.makedirs(save_path_root, exist_ok=True)
 
-#     for file_name, file_id in file_ids.items():
-#         file_url = 'https://drive.google.com/uc?id='+file_id
-#         save_path = osp.abspath(osp.join(save_path_root, file_name))
-#         if osp.exists(save_path):
-#             user_response = input(f'{file_name} already exist. Do you want to cover it? Y/N\n')
-#             if user_response.lower() == 'y':
-#                 print(f'Covering {file_name} to {save_path}')
-#                 gdown.download(file_url, save_path, quiet=False)
-#                 # download_file_from_google_drive(file_id, save_path)
-#             elif user_response.lower() == 'n':
-#                 print(f'Skipping {file_name}')
-#             else:
-#                 raise ValueError('Wrong input. Only accepts Y/N.')
-#         else:
-#             print(f'Downloading {file_name} to {save_path}')
-#             gdown.download(file_url, save_path, quiet=False)
-#             # download_file_from_google_drive(file_id, save_path)
+    for file_name, file_id in file_ids.items():
+        file_url = 'https://drive.google.com/uc?id='+file_id
+        save_path = osp.abspath(osp.join(save_path_root, file_name))
+        if osp.exists(save_path):
+            user_response = input(f'{file_name} already exist. Do you want to cover it? Y/N\n')
+            if user_response.lower() == 'y':
+                print(f'Covering {file_name} to {save_path}')
+                # gdown.download(file_url, save_path, quiet=False)
+                # download_file_from_google_drive(file_id, save_path)
+            elif user_response.lower() == 'n':
+                print(f'Skipping {file_name}')
+            else:
+                raise ValueError('Wrong input. Only accepts Y/N.')
+        else:
+            print(f'Downloading {file_name} to {save_path}')
+            # gdown.download(file_url, save_path, quiet=False)
+            # download_file_from_google_drive(file_id, save_path)
 
 
 def imwrite(img, file_path, params=None, auto_mkdir=True):
