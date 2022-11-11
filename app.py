@@ -159,7 +159,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
                     restored_face = tensor2img(output, rgb2bgr=True, min_max=(-1, 1))
                 del output
                 torch.cuda.empty_cache()
-            except Exception as error:
+            except RuntimeError as error:
                 print(f"\tFailed inference for CodeFormer: {error}")
                 restored_face = tensor2img(
                     cropped_face_t, rgb2bgr=True, min_max=(-1, 1)
@@ -257,7 +257,7 @@ demo = gr.Interface(
         ['04.jpg', True, True, 2, 0.1],
         ['05.jpg', True, True, 2, 0.1]
       ]
-    ).launch()
+    )
 
-demo.queue(concurrency_count=3)
+demo.queue(concurrency_count=4)
 demo.launch()
