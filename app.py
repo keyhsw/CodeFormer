@@ -109,8 +109,12 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         only_center_face = False
         draw_box = False
         detection_model = "retinaface_resnet50"
+        print(image, background_enhance, face_upsample, upscale, codeformer_fidelity)
 
         upscale = int(upscale) # covert type to int
+        if upscale > 4:
+            upscale = 4  # avoid momory exceeded due to too large upscale
+
         face_helper = FaceRestoreHelper(
             upscale,
             face_size=512,
@@ -124,6 +128,8 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         face_upsampler = upsampler if face_upsample else None
 
         img = cv2.imread(str(image), cv2.IMREAD_COLOR)
+
+        print('Image size:', img.shape)
 
         if has_aligned:
             # the input faces are already cropped and aligned
@@ -241,8 +247,8 @@ demo = gr.Interface(
         gr.inputs.Image(type="filepath", label="Input"),
         gr.inputs.Checkbox(default=True, label="Background_Enhance"),
         gr.inputs.Checkbox(default=True, label="Face_Upsample"),
-        gr.inputs.Number(default=2, label="Rescaling_Factor"),
-        gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity: 0 for better quality, 1 for better identity')
+        gr.inputs.Number(default=2, label="Rescaling_Factor (up to 4)"),
+        gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity: 0 better quality, 1 better identity')
     ], [
         gr.outputs.Image(type="numpy", label="Output"),
         gr.outputs.File(label="Download the output")
