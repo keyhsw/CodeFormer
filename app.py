@@ -109,7 +109,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         only_center_face = False
         draw_box = False
         detection_model = "retinaface_resnet50"
-        print(image, background_enhance, face_upsample, upscale, codeformer_fidelity)
+        print('Inp:', image, background_enhance, face_upsample, upscale, codeformer_fidelity)
 
         upscale = int(upscale) # covert type to int
         if upscale > 4:
@@ -129,14 +129,14 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
 
         img = cv2.imread(str(image), cv2.IMREAD_COLOR)
 
-        print('Image size:', img.shape)
+        print('\timage size:', img.shape)
 
         if has_aligned:
             # the input faces are already cropped and aligned
             img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_LINEAR)
             face_helper.is_gray = is_gray(img, threshold=5)
             if face_helper.is_gray:
-                print('Grayscale input: True')
+                print('\tgrayscale input: True')
             face_helper.cropped_faces = [img]
         else:
             face_helper.read_image(img)
@@ -144,7 +144,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
             num_det_faces = face_helper.get_face_landmarks_5(
             only_center_face=only_center_face, resize=640, eye_dist_threshold=5
             )
-            print(f"\tdetect {num_det_faces} faces")
+            print(f'\tdetect {num_det_faces} faces')
             # align and warp each face
             face_helper.align_warp_face()
 
@@ -166,7 +166,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
                 del output
                 torch.cuda.empty_cache()
             except RuntimeError as error:
-                print(f"\tFailed inference for CodeFormer: {error}")
+                print(f"Failed inference for CodeFormer: {error}")
                 restored_face = tensor2img(
                     cropped_face_t, rgb2bgr=True, min_max=(-1, 1)
                 )
@@ -202,7 +202,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         restored_img = cv2.cvtColor(restored_img, cv2.COLOR_BGR2RGB)
         return restored_img, save_path
     except Exception as error:
-        print('global exception', error)
+        print('Global exception', error)
         return None, None
 
 
@@ -248,7 +248,7 @@ demo = gr.Interface(
         gr.inputs.Checkbox(default=True, label="Background_Enhance"),
         gr.inputs.Checkbox(default=True, label="Face_Upsample"),
         gr.inputs.Number(default=2, label="Rescaling_Factor (up to 4)"),
-        gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity: 0 better quality, 1 better identity')
+        gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity (0 for better quality, 1 for better identity)')
     ], [
         gr.outputs.Image(type="numpy", label="Output"),
         gr.outputs.File(label="Download the output")
