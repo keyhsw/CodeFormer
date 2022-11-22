@@ -266,4 +266,4 @@ demo = gr.Interface(
     )
 
 demo.queue(concurrency_count=3)
-demo.launch(enable_queue=True)
+demo.launch()
