@@ -111,9 +111,14 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         detection_model = "retinaface_resnet50"
         print('Inp:', image, background_enhance, face_upsample, upscale, codeformer_fidelity)
 
+        img = cv2.imread(str(image), cv2.IMREAD_COLOR)
+        print('\timage size:', img.shape)
+
         upscale = int(upscale) # covert type to int
         if upscale > 4:
             upscale = 4  # avoid momory exceeded due to too large upscale
+        if upscale > 2 and min(img.shape[:2])>1280:
+            upscale = 2  # avoid momory exceeded due to too large img resolution
 
         face_helper = FaceRestoreHelper(
             upscale,
@@ -127,9 +132,6 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         bg_upsampler = upsampler if background_enhance else None
         face_upsampler = upsampler if face_upsample else None
 
-        img = cv2.imread(str(image), cv2.IMREAD_COLOR)
-
-        print('\timage size:', img.shape)
 
         if has_aligned:
             # the input faces are already cropped and aligned
