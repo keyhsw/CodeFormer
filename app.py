@@ -117,7 +117,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         upscale = int(upscale) # covert type to int
         if upscale > 4:
             upscale = 4  # avoid momory exceeded due to too large upscale
-        if upscale > 2 and min(img.shape[:2])>1280:
+        if upscale > 2 and max(img.shape[:2])>1000:
             upscale = 2  # avoid momory exceeded due to too large img resolution
 
         face_helper = FaceRestoreHelper(
@@ -267,5 +267,5 @@ demo = gr.Interface(
       ]
     )
 
-demo.queue(concurrency_count=4)
+demo.queue(concurrency_count=2)
 demo.launch()
