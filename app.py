@@ -115,10 +115,14 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         print('\timage size:', img.shape)
 
         upscale = int(upscale) # covert type to int
-        if upscale > 4:
-            upscale = 4  # avoid momory exceeded due to too large upscale
-        if upscale > 2 and max(img.shape[:2])>1000:
-            upscale = 2  # avoid momory exceeded due to too large img resolution
+        if upscale > 4: # avoid momory exceeded due to too large upscale
+            upscale = 4 
+        if upscale > 2 and max(img.shape[:2])>1000: # avoid momory exceeded due to too large img resolution
+            upscale = 2 
+        if max(img.shape[:2]) > 1500: # avoid momory exceeded due to too large img resolution
+            upscale = 1
+            background_enhance = False
+            face_upsample = False
 
         face_helper = FaceRestoreHelper(
             upscale,
@@ -131,7 +135,6 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         )
         bg_upsampler = upsampler if background_enhance else None
         face_upsampler = upsampler if face_upsample else None
-
 
         if has_aligned:
             # the input faces are already cropped and aligned
