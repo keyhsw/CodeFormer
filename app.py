@@ -244,7 +244,13 @@ Redistribution and use for non-commercial purposes should follow this license.
 
 If you have any questions, please feel free to reach me out at <b>shangchenzhou@gmail.com</b>.
 
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=sczhou/CodeFormer)
+<div>
+    🤗 Find Me:
+    <a href="https://twitter.com/ShangchenZhou"><img style="margin-top:0.5em; margin-bottom:0.5em" src="https://img.shields.io/twitter/follow/ShangchenZhou?label=%40ShangchenZhou&style=social" alt="Twitter Follow"></a> 
+    <a href="https://github.com/sczhou"><img style="margin-top:0.5em; margin-bottom:2em" src="https://img.shields.io/github/followers/sczhou?style=social" alt="Github Follow"></a>
+</div>
+
+<center><img src='https://visitor-badge.laobi.icu/badge?page_id=sczhou/CodeFormer' alt='visitors'></center>
 """
 
 demo = gr.Interface(
