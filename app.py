@@ -205,7 +205,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         imwrite(restored_img, str(save_path))
 
         restored_img = cv2.cvtColor(restored_img, cv2.COLOR_BGR2RGB)
-        return restored_img, save_path
+        return restored_img
     except Exception as error:
         print('Global exception', error)
         return None, None
@@ -261,8 +261,7 @@ demo = gr.Interface(
         gr.inputs.Number(default=2, label="Rescaling_Factor (up to 4)"),
         gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity (0 for better quality, 1 for better identity)')
     ], [
-        gr.outputs.Image(type="numpy", label="Output"),
-        gr.outputs.File(label="Download the output")
+        gr.outputs.Image(type="numpy", label="Output")
     ],
     title=title,
     description=description,
