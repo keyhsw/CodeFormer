@@ -275,5 +275,5 @@ demo = gr.Interface(
       ]
     )
 
-demo.queue(concurrency_count=2)
+demo.queue(api_open=False, concurrency_count=2, max_size=10)
 demo.launch()
