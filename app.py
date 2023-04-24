@@ -110,6 +110,11 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         draw_box = False
         detection_model = "retinaface_resnet50"
         print('Inp:', image, background_enhance, face_upsample, upscale, codeformer_fidelity)
+        
+        if face_upsample is None:
+            face_upsample = False
+        if upscale is None:
+            upscale = False
 
         img = cv2.imread(str(image), cv2.IMREAD_COLOR)
         print('\timage size:', img.shape)
@@ -266,13 +271,13 @@ td {
 
 demo = gr.Interface(
     inference, [
-        gr.inputs.Image(type="filepath", label="Input"),
-        gr.inputs.Checkbox(default=True, label="Background_Enhance"),
-        gr.inputs.Checkbox(default=True, label="Face_Upsample"),
-        gr.inputs.Number(default=2, label="Rescaling_Factor (up to 4)"),
+        gr.Image(type="filepath", label="Input"),
+        gr.Checkbox(value=True, label="Background_Enhance"),
+        gr.Checkbox(value=True, label="Face_Upsample"),
+        gr.Number(value=2, label="Rescaling_Factor (up to 4)"),
         gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity (0 for better quality, 1 for better identity)')
     ], [
-        gr.outputs.Image(type="numpy", label="Output")
+        gr.Image(type="numpy", label="Output")
     ],
     title=title,
     description=description,
@@ -283,8 +288,7 @@ demo = gr.Interface(
         ['03.jpg', True, True, 2, 0.7],
         ['04.jpg', True, True, 2, 0.1],
         ['05.jpg', True, True, 2, 0.1]
-      ]
-    )
+      ])
 
 demo.queue(api_open=False, concurrency_count=2, max_size=10)
 demo.launch()
