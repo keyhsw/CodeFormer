@@ -114,7 +114,7 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         if face_upsample is None:
             face_upsample = False
         if upscale is None:
-            upscale = False
+            upscale = True
 
         img = cv2.imread(str(image), cv2.IMREAD_COLOR)
         print('\timage size:', img.shape)
