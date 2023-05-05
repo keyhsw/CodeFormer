@@ -111,10 +111,9 @@ def inference(image, background_enhance, face_upsample, upscale, codeformer_fide
         detection_model = "retinaface_resnet50"
         print('Inp:', image, background_enhance, face_upsample, upscale, codeformer_fidelity)
         
-        if face_upsample is None:
-            face_upsample = False
-        if upscale is None:
-            upscale = True
+        if background_enhance is None: background_enhance = True
+        if face_upsample is None: face_upsample = True
+        if upscale is None: upscale = 2
 
         img = cv2.imread(str(image), cv2.IMREAD_COLOR)
         print('\timage size:', img.shape)
