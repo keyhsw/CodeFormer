@@ -1,4 +1,3 @@
-gradio==3.26.0
 addict
 future
 lmdb
