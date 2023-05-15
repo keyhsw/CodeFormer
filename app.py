@@ -289,5 +289,6 @@ demo = gr.Interface(
         ['05.jpg', True, True, 2, 0.1]
       ])
 
-demo.queue(api_open=False, concurrency_count=2, max_size=20)
-demo.launch()
+DEBUG = os.getenv('DEBUG') == '1'
+demo.queue(api_open=False, concurrency_count=2, max_size=10)
+demo.launch(debug=DEBUG)
