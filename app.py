@@ -265,7 +265,7 @@ td {
 </tr>
 </table>
 
-<center><img src='https://visitor-badge-sczhou.glitch.me/badge?page_id=sczhou/CodeFormer' alt='visitors'></center>
+<center><img src='https://api.infinitescript.com/badgen/count?name=sczhou/CodeFormer&ltext=Visitors&color=6dc9aa' alt='visitors'></center>
 """
 
 demo = gr.Interface(
