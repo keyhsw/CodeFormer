@@ -10,6 +10,7 @@ import cv2
 import torch
 import torch.nn.functional as F
 import gradio as gr
+from itertools import chain
 
 from torchvision.transforms.functional import normalize
 
@@ -268,27 +269,38 @@ td {
 <center><img src='https://api.infinitescript.com/badgen/count?name=sczhou/CodeFormer&ltext=Visitors&color=6dc9aa' alt='visitors'></center>
 """
 
-demo = gr.Interface(
-    inference, [
-        gr.Image(type="filepath", label="Input"),
-        gr.Checkbox(value=True, label="Background_Enhance"),
-        gr.Checkbox(value=True, label="Face_Upsample"),
-        gr.Number(value=2, label="Rescaling_Factor (up to 4)"),
-        gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity (0 for better quality, 1 for better identity)')
-    ], [
-        gr.Image(type="numpy", label="Output").style(height='auto')
-    ],
-    title=title,
-    description=description,
-    article=article,       
-    examples=[
+with gr.Blocks() as demo:
+    gr.Markdown(title)
+    gr.Markdown(description)
+    with gr.Box():
+        with gr.Column():
+            input_img = gr.Image(type="filepath", label="Input")
+            background_enhance = gr.Checkbox(value=True, label="Background_Enhance")
+            face_enhance = gr.Checkbox(value=True, label="Face_Upsample")
+            upscale_factor = gr.Number(value=2, label="Rescaling_Factor (up to 4)")
+            codeformer_fidelity = gr.Slider(0, 1, value=0.5, step=0.01, label='Codeformer_Fidelity (0 for better quality, 1 for better identity)')
+            submit = gr.Button('Enhance Image')
+        with gr.Column():
+            output_img = gr.Image(type="numpy", label="Output").style(height='auto')
+            
+    inps = [input_img, background_enhance, face_enhance, upscale_factor, codeformer_fidelity]
+    submit.click(fn=inference, inputs=inps, outputs=[output_img])
+            
+    ex = gr.Examples([
         ['01.png', True, True, 2, 0.7],
         ['02.jpg', True, True, 2, 0.7],
         ['03.jpg', True, True, 2, 0.7],
         ['04.jpg', True, True, 2, 0.1],
         ['05.jpg', True, True, 2, 0.1]
-      ])
-
+      ],
+        fn=inference,
+        inputs=inps,
+        outputs=[output_img],
+        cache_examples=True)
+    
+    gr.Markdown(article)
+    
+    
 DEBUG = os.getenv('DEBUG') == '1'
 demo.queue(api_open=False, concurrency_count=2, max_size=10)
 demo.launch(debug=DEBUG)
