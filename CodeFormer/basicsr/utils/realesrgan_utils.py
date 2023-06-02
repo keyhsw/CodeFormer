@@ -211,6 +211,7 @@ class RealESRGANer():
             del output_img_t
             torch.cuda.empty_cache()        
         except RuntimeError as error:
+            output_img = cv2.resize(output_img, (w_input * self.scale, h_input * self.scale), interpolation=cv2.INTER_LINEAR)
             print(f"Failed inference for RealESRGAN: {error}")
 
         # ------------------- process the alpha channel if necessary ------------------- #
